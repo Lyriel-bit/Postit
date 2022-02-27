@@ -25,4 +25,21 @@ public class Nota {
     public void setNota(String nota) {
         this.nota = nota;
     }
+    
+    @NonNull
+    @Override
+    public String toString() {
+        try{
+            JSONObject json = new JSONObject();
+            json.put("title",title);
+            json.put("text",text);
+            return json.toString();
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
 }
