@@ -1,0 +1,63 @@
+package com.example.postit;
+
+import android.content.Context;
+import android.content.SharedPreferences;
+
+import org.json.JSONArray;
+import org.json.JSONObject;
+
+import java.util.ArrayList;
+import java.util.List;
+
+public class SharedPref {
+
+
+    private static final String PREF_NAME = "my_pref";
+    private static final String KEY_NOTES = "notes";
+
+    public static void save(Context context, Nota nota)
+    {
+        List<Nota> notes = new ArrayList<>();
+        notes.add(nota);
+
+        SharedPreferences pref = context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = pref.edit();
+        editor.putString(KEY_NOTES, notes.toString());
+        editor.commit();
+    }
+
+
+    public static List<Nota> load(Context context)
+    {
+        List<Nota> notes = new ArrayList<>();
+
+        SharedPreferences pref = context.getSharedPreferences(PREF_NAME,Context.MODE_PRIVATE);
+        //recupero i dati salvati
+        String jsonString = pref.getString(KEY_NOTES,null);
+
+        if(jsonString != null) {
+            try {
+
+                JSONArray array = new JSONArray(jsonString);
+                //ogni elemento del jsonarray è un json object che rappresenta la nota
+                for (int i = 0; i < array.length(); i++) {
+                    //jsonobject estrae dall'array degli oggetti di tipo json object,ognuno composto da coppia nome,valore
+                    JSONObject json = array.optJSONObject(i);
+                    if (json != null) {
+                        Nota nota = new Nota();
+                        //optString ritorna il valore mappato da name, che corrisponde a title nel primo
+                        // caso e text nel secondo
+                        nota.setTitle(json.optString("title"));
+                        nota.setNota(json.optString("text"));
+
+                        //salvo le note in una lista
+                        notes.add(nota);
+                    }
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        return notes;
+    }
+}
