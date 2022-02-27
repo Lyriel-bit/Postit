@@ -40,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements AdapterNote.ItemC
          */
         nota = new ArrayList<>();
 
+        /*
         nota.add(new Nota("Prima nota","contenuto prima nota"));
         nota.add(new Nota("Seconda nota","contenuto seconda nota"));
         nota.add(new Nota("Terza nota","contenuto terza nota"));
@@ -60,7 +61,7 @@ public class MainActivity extends AppCompatActivity implements AdapterNote.ItemC
         nota.add(new Nota("Seconda nota","contenuto seconda nota"));
         nota.add(new Nota("Terza nota","contenuto terza nota"));
         nota.add(new Nota("Quarta nota","contenuto seconda nota"));
-
+*/
 
         layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager);
@@ -95,7 +96,11 @@ public class MainActivity extends AppCompatActivity implements AdapterNote.ItemC
         switch (item.getItemId())
         {
             case R.id.id_add:
-                Toast.makeText(getApplicationContext(), "hey this is my add", Toast.LENGTH_SHORT).show();
+                {
+                  Intent intent = new Intent(MainActivity.this, EditNote.class);
+                  startActivity(intent);
+                  return true;
+                }
             default:
                 return super.onOptionsItemSelected(item);
         }
